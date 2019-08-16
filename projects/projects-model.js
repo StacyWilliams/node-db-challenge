@@ -5,11 +5,10 @@ module.exports = {
     findTasks,
     findResources,
     findById,
-    findTasks,
+   
     addResource,
     addProject,
-    update,
-    remove,
+    
     addTask
   };
   
@@ -22,49 +21,42 @@ module.exports = {
   }
 
   function findTasks() {
-    return db('task');
+    return db("tasks")
+    .innerJoin("project", "project.id", "=", "task.project_id")
+    .select(
+      "task.id",
+      "project.name",
+      "project.description",
+      "task.description",
+      "task.notes",
+      "task.completed"
+    );
   }
+
   function findById(id) {
     return db('projects')
     .where({ id });
   }
   
-  function addProject(project) {
+  function addProject(todo) {
     return db('projects')
-    .insert(project)
-    .then(res => find())
+    .insert(todo)
+    .then(res => findProjects())
   }
 
   function addResource(resource) {
     return db('resources')
     .insert(resource)
-    .then(res => find())
+    .then(res => findResources())
   }
 
   function addTask(task) {
-    return db('projects')
+    return db('tasks')
     .insert(task)
-    .then(res => find())
+    .then(res => findTasks())
   }
   
-  function findTasks(id) {
-    return db('projects')
-      .innerJoin('tasks', 'tasks.task_id', '=', 'project.id')
-      .select('projects.project_name', 'tasks.task_id')
-      .where({project_id: id });
-  }
-  
-  function update(id, changes) {
-    return db('projects')
-      .where({ id })
-      .update(changes);
-  }
-  
-  function remove(id) {
-    return db('projects')
-      .where({ id })
-      .del();
-  }
+ 
 
  
   
