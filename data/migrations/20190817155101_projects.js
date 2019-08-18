@@ -17,6 +17,12 @@ exports.up = function(knex, Promise) {
         tbl.string('description', 254).notNullable();
         tbl.string('notes', 254);
         tbl.boolean('completed').notNullable();
+        tbl.integer("projects_id")
+            .notNullable()
+            .references("id")
+            .inTable("projects")
+            .onDelete('RESTRICT')
+            .onUpdate('CASCADE');
     })
     .createTable("project_tasks", tbl => {
         tbl.increments();

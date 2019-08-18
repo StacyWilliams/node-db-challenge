@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const helpers = require('./projects-model')
+const helpers = require('./projects-model');
 
 
 
@@ -15,15 +15,35 @@ router.get('/data/projects', async (req,res) => {
 }); //enpoint works
 
 router.get('/data/tasks', async (req,res) => {
-   
-    try{
-        const tasks = await helpers.findTasks();
-         res.json(tasks);
-    }catch (err) {
-        res.status(500).json({ message : "Failed to get tasks"})
+    
+    const completed = req.params.completed
+    if( completed === 0 ){
+        return({'...completed : false'})
+    }else{
+        return({'...tasks.completed : true'})
     }
     
-}); //enpoint works it did before I tried to dicate what rendered 
+    try{
+     const tasks = await helpers.findTask(completed);
+         res.status(200).json(tasks);
+      }
+    catch(error)  {
+          res.status(500).json({ message: 'failed to get tasks'})
+      }
+ })
+  
+
+  
+    // try{
+    //      db.tasks = await helpers.findTasks();
+    //      res.json(tasks);
+    // }catch (err) {
+    //     res.status(500).json({ message : "Failed to get tasks"})
+    
+    // }
+
+
+ //enpoint works it did before I tried to dicate what rendered 
 
 router.get('/data/resources', async (req,res) => {
     try{
@@ -70,8 +90,7 @@ router.post('/data/resources', async (req, res) => {
       res.status(500).json({ message: 'Failed to create new task' });
     }
   });//enpoint works
-  
+    
   module.exports = router;
 
 
-module.exports = router

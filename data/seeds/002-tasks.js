@@ -7,6 +7,7 @@ exports.seed = function(knex) {
       return knex('tasks').insert([
         {
         id: 1,
+         project_id:1,
          description: 'start mower',
          notes:'make sure there is gas',
          completed:false
@@ -14,6 +15,7 @@ exports.seed = function(knex) {
 
         {
          id: 2,
+         project_id:2,
          description: 'remove drain plug and filter',
          notes:'find oil filter wrench',
          completed:false
@@ -21,6 +23,7 @@ exports.seed = function(knex) {
 
         {
          id: 3,
+         project_id:3,
          description: 'learn nodejs',
          notes:'listen to Luis',
          completed:false
