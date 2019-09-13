@@ -17,13 +17,13 @@ module.exports = {
   function findResources() {
     return db('resources');
   }
-//   **The list of tasks should include the project 
- //   name and project description**.
+
  function findTasks(id) {
   return db('tasks')
-       .join('projects')
-      //  .select('tasks.id', 'projects.project_id', 'tasks.task_number', 'projects.project_name as project_name', 'tasks.instructions')
-      // .where({ project_id: id });
+       .join('projects', "projects.id", 'tasks.project_id')
+       .where('project_id', id)  
+      // .select('project_id')
+       
     }
 
   function findById(id) {

@@ -3,7 +3,7 @@ const helpers = require('./projects-model.js');
 
 const router = express.Router();
 
-router.get('/api/projects', async (req, res) => {
+router.get('/projects', async (req, res) => {
   
   try {
     const todos = await helpers.findProjects();
@@ -17,7 +17,7 @@ router.get('/api/projects', async (req, res) => {
   
 }); //endpoint works
 
-router.get('/api/resources', async (req, res) => {
+router.get('/resources', async (req, res) => {
   try {
     const resources = await helpers.findResources();
     res.json(resources);
@@ -26,10 +26,11 @@ router.get('/api/resources', async (req, res) => {
   }
 }); //endpoint works
 
-router.get('/api/projects/1/tasks', async (req, res) => {
-
+router.get('/projects/:id/tasks', async (req, res) => {
+    const { id } = req.params 
+    console.log(id) 
    try {
-     const tasks = await helpers.findTasks();
+     const tasks = await helpers.findTasks(id);
      tasks.map(t => {
       t.completed = t.completed == '1' ? true : false
      })
@@ -40,7 +41,7 @@ router.get('/api/projects/1/tasks', async (req, res) => {
    
 }); //endpoint works
 
-router.post('/api/resources', async (req, res) => {
+router.post('/resources', async (req, res) => {
   const newResource = req.body;
 
   try {
@@ -51,7 +52,7 @@ router.post('/api/resources', async (req, res) => {
   }
 }); //endpoint works
 
-router.post('/api/projects', async (req, res) => {
+router.post('/projects', async (req, res) => {
   const newProject = req.body;
 
   try {
@@ -62,7 +63,7 @@ router.post('/api/projects', async (req, res) => {
   }
 });//endpoint works
 
-router.post('/api/tasks', async (req, res) => {
+router.post('/tasks', async (req, res) => {
   const taskData = req.body; 
 
   try {
