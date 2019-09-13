@@ -5,6 +5,7 @@ exports.up = function(knex, Promise) {
       tbl.increments();
       tbl.text('name', 128).unique().notNullable();
       tbl.string('description', 254);
+      tbl.integer('task_id');
       tbl.boolean('completed').notNullable();
     })
     .createTable('resources',tbl => {
@@ -18,18 +19,13 @@ exports.up = function(knex, Promise) {
         tbl.string('notes', 254);
         tbl.boolean('completed').notNullable();
     })
-    .createTable("project_task", tbl => {
+    .createTable("project_tasks", tbl => {
         tbl.increments();
-        tbl
-        .integer("project_id")
-        .unsigned()
+        tbl.integer("project_id")
         .notNullable()
         .references("id")
         .inTable("project")
-   
-        tbl
-        .integer("task_id")
-        .unsigned()
+        tbl.integer("task_id")
         .notNullable()
         .references("id")
         .inTable("task")
@@ -42,6 +38,6 @@ exports.up = function(knex, Promise) {
       .dropTableIfExists('projects')
       .dropTableIfExists('resources')
       .dropTableIfExists('tasks')
-      .dropTableIfExists('tasks')
+      .dropTableIfExists('project_tasks')
       };
 

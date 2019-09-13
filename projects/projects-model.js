@@ -5,10 +5,8 @@ module.exports = {
     findTasks,
     findResources,
     findById,
-   
     addResource,
     addProject,
-    
     addTask
   };
   
@@ -19,19 +17,14 @@ module.exports = {
   function findResources() {
     return db('resources');
   }
-
-  function findTasks() {
-    return db("tasks")
-    .innerJoin("project", "project.id", "=", "task.project_id")
-    .select(
-      "task.id",
-      "project.name",
-      "project.description",
-      "task.description",
-      "task.notes",
-      "task.completed"
-    );
-  }
+//   **The list of tasks should include the project 
+ //   name and project description**.
+ function findTasks(id) {
+  return db('tasks')
+       .join('projects')
+      //  .select('tasks.id', 'projects.project_id', 'tasks.task_number', 'projects.project_name as project_name', 'tasks.instructions')
+      // .where({ project_id: id });
+    }
 
   function findById(id) {
     return db('projects')

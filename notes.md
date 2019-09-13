@@ -16,7 +16,7 @@
 
 // router.get('/data/projects/:id/tasks', async (req, res) => {
 //   try {
-//     const tasks = await projects.findTasks(id);
+//     const tasks = await helpers.findTasks(id);
 //     res.json(tasks);
 //   } catch (err) {
 //     res.status(500).json({ message: 'Failed to get tasks' });
@@ -29,10 +29,10 @@ router.put('/data/projects/:id', async (req, res) => {
   const changes = req.body;
 
   try {
-    const project = await projects.findById(id);
+    const project = await projectshelpers.findById(id);
 
     if (project) {
-      const updatedProject = await projects.update(changes, id);
+      const updatedProject = await helpers.update(changes, id);
       res.json(updatedProject);
     } else {
       res.status(404).json({ message: 'Could not find project with given id' });

@@ -1,24 +1,23 @@
 const express = require('express');
-const db = require('../data/db-config')
 const helpers = require('./projects-model.js');
 
 const router = express.Router();
 
-router.get('/data/projects', async (req, res) => {
-  // const completed = res.params.completed
-  // completed === 'false' ? res.send().json({completed:'false'}) : res.send().json({completed: 'true'})
+router.get('/api/projects', async (req, res) => {
+  
   try {
     const todos = await helpers.findProjects();
+    todos.map(p => {
+      p.completed = p.completed == '1' ? true : false
+     })
     res.json(todos);
   } catch (err) {
     res.status(500).json({ message: 'Failed to get projects' });
   }
   
-}
+}); //endpoint works
 
-); //endpoint works
-
-router.get('/data/resources', async (req, res) => {
+router.get('/api/resources', async (req, res) => {
   try {
     const resources = await helpers.findResources();
     res.json(resources);
@@ -27,36 +26,32 @@ router.get('/data/resources', async (req, res) => {
   }
 }); //endpoint works
 
-router.get('/data/tasks', async (req, res) => {
+router.get('/api/projects/1/tasks', async (req, res) => {
+
    try {
      const tasks = await helpers.findTasks();
-     res.json(tasks);
+     tasks.map(t => {
+      t.completed = t.completed == '1' ? true : false
+     })
+     res.status(200).json(tasks);
    } catch (err) {
     res.status(500).json({ message: 'Failed to get tasks' });
-   }
-  //  task.completed == false ? res.send().json({completed:'false'}) : res.send().json({completed: 'true'})
+   } 
+   
 }); //endpoint works
 
-router.post('/data/resources', async (req, res) => {
+router.post('/api/resources', async (req, res) => {
   const newResource = req.body;
-console.log(req.body)
+
   try {
     const resource = await helpers.addResource(newResource);
     res.status(201).json(resource);
   } catch (err) {
     res.status(500).json({ message: 'Failed to create new resource' });
   }
-  // const newResource = req.body 
-     
-  //   if(newResource){
-  //       resources.push(newResource);
-  //       res.status(201).json({resources});
-  //   }else{
-  //       res.status(400).json({message: "please provide a resource"})
-  //   }
-});
+}); //endpoint works
 
-router.post('/data/projects', async (req, res) => {
+router.post('/api/projects', async (req, res) => {
   const newProject = req.body;
 
   try {
@@ -65,13 +60,12 @@ router.post('/data/projects', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Failed to create new project' });
   }
-});
+});//endpoint works
 
-router.post('/data/tasks', async (req, res) => {
+router.post('/api/tasks', async (req, res) => {
   const taskData = req.body; 
 
   try {
-
     if (taskData) {
       const task = await helpers.addTask(taskData);
       res.status(201).json(task);
@@ -79,6 +73,6 @@ router.post('/data/tasks', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Failed to create new task' });
   }
-});
+});//endpoint works
 
 module.exports = router;
